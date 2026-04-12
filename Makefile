@@ -1,7 +1,7 @@
 default_target: local
 
 COMMIT_HASH := $(shell git log -1 --pretty=format:"%h"|tail -1)
-VERSION = 0.17.1
+VERSION = 0.18.0
 IMAGE_REPO ?= ghcr.io/blakeblackshear/frigate
 GITHUB_REF_NAME ?= $(shell git rev-parse --abbrev-ref HEAD)
 BOARDS= #Initialized empty
@@ -56,7 +56,8 @@ push: push-boards
 		--push
 
 run: local
-	docker run --rm --publish=5000:5000 --volume=${PWD}/config:/config frigate:latest
+	docker run --rm --publish=5000:5000 --publish=8971:8971 \
+		--volume=${PWD}/config:/config frigate:latest
 
 run_tests: local
 	docker run --rm --workdir=/opt/frigate --entrypoint= frigate:latest \
